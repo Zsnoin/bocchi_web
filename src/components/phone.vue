@@ -13,13 +13,14 @@
 import { onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-const previewRef = ref < HTMLElement | null > (null)
+const previewRef = ref<HTMLElement | null>(null)
 const props = defineProps({
     url: {
         type: String,
         required: true
     }
 })
+
 onMounted(() => {
     gsap.registerPlugin(ScrollTrigger);
     gsap.set(previewRef.value, { opacity: 0.3, scale: 0.5 })
@@ -63,7 +64,8 @@ onMounted(() => {
 
         .img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            aspect-ratio: 0.45;
             object-fit: contain;
             border-radius: 20px;
         }

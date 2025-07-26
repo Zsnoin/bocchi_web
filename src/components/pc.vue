@@ -3,7 +3,7 @@
     <div class="device-mockup">
       <img class="img" :src="props.url" alt="">
     </div>
-    <img class="bracket" src="/src/assets/images/bracket.png" alt=""> 
+    <img class="bracket" src="/src/assets/images/bracket.png" alt="">
   </div>
 </template>
 
@@ -63,12 +63,14 @@ onMounted(() => {
 
     .img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      aspect-ratio: 1.38;
       object-fit: contain;
     }
 
   }
-  .bracket{
+
+  .bracket {
     width: 50%;
   }
 }
