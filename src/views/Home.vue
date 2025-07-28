@@ -7,8 +7,9 @@
 
     <div ref="ctaRef" class="download">
       <a href="https://gitee.com/zsnoin-can/new-wall-paper-apk/blob/master/wallpaper.apk" target="_blank"> 安卓地址 </a>
-      <a href="https://gitee.com/zsnoin-can/desktop_exe" target="_blank"> window地址 </a>
-      <!-- 打开新标签页 -->
+      <a href="https://gitee.com/zsnoin-can/desktop_exe" target="_blank"> Windows地址 </a>
+      <a href="https://gitee.com/zsnoin-can/new-wall-paper" target="_blank"> 安卓开源地址 </a>
+      <a href="https://gitee.com/zsnoin-can/windows_wallpaper" target="_blank"> Windows开源地址 </a>
     </div>
 
     <div class="features-section">
@@ -21,10 +22,15 @@
         <p>{{ feature.description }}</p>
       </div>
     </div>
-    
-    <!-- 添加路由视图 -->
-    <router-view></router-view>
-    
+
+    <h2 class="title">超分辨率工具</h2>
+    <div ref="tools_details" class="tools_details">
+      核心作用是提升低分辨率图像的清晰度：它能在放大画面的同时智能补充细节，避免单纯缩放导致的 “马赛克”
+      现象，既优化低清内容在高清设备上的视觉体验（如修复老照片），也为设计师、创作者提供素材修复与质量提升的辅助，更在安防、医疗、卫星遥感等领域助力细节识别与分析，最终实现 “化模糊为清晰”，突破低分辨率内容的实用限制。
+    </div>
+    <a ref="tools_download" href="https://gitee.com/zsnoin-can/wallpaper_tools" target="_blank"> 点击前往下载 </a>
+
+
     <h2 class="title">手机端预览图</h2>
     <div class="previewPhone">
       <Phone v-for="i in images" :url="i"></Phone>
@@ -62,6 +68,9 @@ const titleRef = ref<HTMLElement | null>(null)
 const subtitleRef = ref<HTMLElement | null>(null)
 const ctaRef = ref<HTMLElement | null>(null)
 const featureRefs = ref<HTMLElement[]>([])
+const tools_details = ref<HTMLElement | null>(null)
+const tools_download = ref<HTMLElement | null>(null)
+
 
 // 功能特性数据
 const features = ref([
@@ -97,42 +106,58 @@ const setFeatureRef = (el: any, index: number) => {
 // 页面加载时执行动画
 onMounted(() => {
   // 初始化元素透明度为0
-  gsap.set([titleRef.value, subtitleRef.value], { opacity: 0 })
+  gsap.set([titleRef.value, subtitleRef.value, tools_details.value, tools_download.value], { opacity: 0 })
   gsap.set(featureRefs.value, { opacity: 0, y: 0 })
-   gsap.set(ctaRef.value, { opacity: 0, scale: 0.5 })
+  gsap.set(ctaRef.value, { opacity: 0 })
 
   // 创建时间线动画
   const tl = gsap.timeline()
+  const tl2 = gsap.timeline()
+
+
 
   // 标题动画
   tl.to(titleRef.value, {
     opacity: 1,
     y: 0,
-    duration: 1,
+    duration: 0.5,
     ease: "power2.out"
   })
 
-  // 功能卡片动画
-  featureRefs.value.forEach((el, i) => {
-    tl.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.3 + i * 0.1,
-    })
-  })
-
   // 副标题动画
-  gsap.to(subtitleRef.value, {
+  tl.to(subtitleRef.value, {
     opacity: 1,
     y: 0,
-    duration: 1.5,
+    duration: 0.5,
     ease: "power2.out"
   })
 
   // CTA按钮动画
-  gsap.to(ctaRef.value, {
+  tl2.to(ctaRef.value, {
     opacity: 1,
     scale: 1,
+    duration: 0.5,
+    ease: "power2.out"
+  })
+
+  // 功能卡片动画
+  featureRefs.value.forEach((el) => {
+    tl.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+    })
+  })
+
+
+
+  tl2.to(tools_details.value, {
+    opacity: 1,
+    duration: 1,
+    ease: "power2.out"
+  })
+  tl2.to(tools_download.value, {
+    opacity: 1,
     duration: 1,
     ease: "power2.out"
   })
@@ -152,6 +177,27 @@ onMounted(() => {
   padding: 20px;
   box-sizing: border-box;
   min-height: 100vh;
+
+  a {
+    width: 200px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 5px;
+    }
+    
+  }
 
   .hero-section {
     text-align: center;
@@ -173,27 +219,10 @@ onMounted(() => {
   .download {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 10px;
     font-size: 17px;
     margin: 10px 0;
-
-    a {
-      text-decoration: none;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
-      border-radius: 5px;
-      transition: background 0.3s ease;
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.2);
-        cursor: pointer;
-        transition: background 0.3s ease;
-        text-decoration: none;
-        color: #fff;
-        border-radius: 5px;
-      }
-    }
   }
 
 
@@ -221,6 +250,22 @@ onMounted(() => {
       }
     }
   }
+
+  .tools_details {
+    background-color: rgba(255, 255, 255, 0.084);
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-indent: 2em;
+
+    &:first-letter {
+      font-size: 1.5em; // 或者您想要的任何尺寸
+      font-weight: bold; // 可选：加粗效果
+    }
+  }
+
+
 
   .previewPhone {
     display: grid;
